@@ -12,79 +12,76 @@
 
 #include "libft.h"
 #include <stdlib.h>
+#include <string.h>
 
-size_t	ft_occ(char const *s, char c)
+static int word_count(const char *s, char c)
 {
-	int	i;
-	int	count;
+    int i = 0;
+    int count = 0;
 
-	i = 0;
-	count = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			count++;
-		i++;
-	}
-	return (count);
+    while (s[i])
+    {
+        while (s[i] == c)
+            i++;
+
+        if (s[i])
+            count++;
+
+        while (s[i] && s[i] != c)
+            i++;
+    }
+    return count;
 }
 
-char	*ft_sep(char const *s, char c)
+char **ft_split(const char *s, char c)
 {
-	int	i;
+    char **split;
+    int i = 0;
+    int start;
+    int end;
+    int word = 0;
 
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (s);
-		i++;
-	}
-	return (0);
-}
+    split = malloc(sizeof(char *) * (word_count(s, c) + 1));
+    if (!split)
+        return NULL;
 
-char	**ft_split(char const *s, char c)
-{
-	char	**split;
-	char	*sep;
-	size_t	len;
-	size_t	occ;
-	size_t	i;
+    while (s[i])
+    {
+        while (s[i] == c)
+            i++;
 
-	if (!s)
-		return (NULL);
-	if (!c)
-		return (ft_strdup(s));
-	occ = ft_occ(s, c);
-	len = ft_strlen(s);
-	if (!(split = (char *)malloc(sizeof(s) * (len - occ + 1))))
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		sep = (char *)malloc(sizeof(ft_sep(s, c)) * (i + 1));
-		sep = *split;
-		free(sep);
-		i++;
-	}
-	split[i] = 0;
-	return (split);
+        start = i;
+
+        while (s[i] && s[i] != c)
+            i++;
+
+        end = i;
+
+        if (end > start)
+        {
+            split[word] = malloc(end - start + 1);
+            strncpy(split[word], s + start, end - start);
+            split[word][end - start] = '\0';
+            word++;
+        }
+    }
+
+    split[word] = NULL;
+    return split;
 }
 
 #include <stdio.h>
-int main()
+int main(void)
 {
-	char *str = "live, love, laugh, 42!,";
-	char delimiter = ",";
+    char **arr = ft_split("live,love,laugh", ',');
 
-	char *new = ft_split(str, delimiter);
-	printf("new str = %s", new);
-	free(new);
-	return (0);
+    int i = 0;
+    while (arr[i])
+    {
+        printf("%s\n", arr[i]);
+        free(arr[i]);
+        i++;
+    }
+
+    free(arr);
 }
-
-// find size inbetween the delimiter
-// malloc mem
-// str to malloc
-// malloc to malloc
-// loop and "\0"

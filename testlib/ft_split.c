@@ -13,6 +13,36 @@
 #include "libft.h"
 #include <stdlib.h>
 
+size_t	ft_occ(char const *s, char c)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	*ft_sep(char const *s, char c)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (s);
+		i++;
+	}
+	return (0);
+}
+
 char	**ft_split(char const *s, char c)
 {
 	char	**split;
@@ -41,45 +71,17 @@ char	**ft_split(char const *s, char c)
 	return (split);
 }
 
-size_t	ft_occ(char const *s, char c)
+#include <stdio.h>
+int main()
 {
-	int	i;
-	int	count;
+	char *str = "live, love, laugh, 42!,";
+	char delimiter = ",";
 
-	i = 0;
-	count = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			count++;
-		i++;
-	}
-	return (count);
+	char *new = ft_split(str, delimiter);
+	printf("new str = %s", new);
+	free(new);
+	return (0);
 }
-
-char	*ft_sep(char const *s, char c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (s);
-		i++;
-	}
-}
-
-// int main()
-// {
-// 	char *str = "live, love, laugh, 42!,";
-// 	char delimiter = ",";
-
-// 	char *new = ft_split(str, delimiter);
-// 	printf("new str = %s", new);
-// 	free(new);
-// 	return (0);
-// }
 
 // find size inbetween the delimiter
 // malloc mem

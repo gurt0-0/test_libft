@@ -12,76 +12,75 @@
 
 #include "libft.h"
 #include <stdlib.h>
-#include <string.h>
 
-static int word_count(const char *s, char c)
+size_t	word_occ(char const *s, char c)
 {
-    int i = 0;
-    int count = 0;
+	int	i;
+	int	count;
 
-    while (s[i])
-    {
-        while (s[i] == c)
-            i++;
-
-        if (s[i])
-            count++;
-
-        while (s[i] && s[i] != c)
-            i++;
-    }
-    return count;
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i])
+			count++;
+		while (s[i] && s[i] != c)
+			i++;
+	}
+	return (count);
 }
 
-char **ft_split(const char *s, char c)
+char	**ft_split(char const *s, char c)
 {
-    char **split;
-    int i = 0;
-    int start;
-    int end;
-    int word = 0;
+	char	**split;
+	size_t	start;
+	size_t	finish;
+	size_t	i;
+	size_t count;
 
-    split = malloc(sizeof(char *) * (word_count(s, c) + 1));
-    if (!split)
-        return NULL;
-
-    while (s[i])
-    {
-        while (s[i] == c)
-            i++;
-
-        start = i;
-
-        while (s[i] && s[i] != c)
-            i++;
-
-        end = i;
-
-        if (end > start)
-        {
-            split[word] = malloc(end - start + 1);
-            strncpy(split[word], s + start, end - start);
-            split[word][end - start] = '\0';
-            word++;
-        }
-    }
-
-    split[word] = NULL;
-    return split;
+	count = 0;
+	if (!s)
+		return (NULL);
+	// if (!c)
+	// 	return (ft_strdup(s));
+	split = malloc(sizeof(char *) * (word_occ(s, c) + 1));
+	if (!split)
+		return NULL;
+	i = 0;
+	while (s[i])
+	{
+		while (s[i] == c)
+			i++;
+		start = i;
+		while (s[i] && s[i] != c)
+			i++;
+		finish = i;
+		if (finish > start)
+		{
+			split[count] = malloc(finish - start + 1);
+			ft_strlcpy(split[count], s + start, finish - start + 1);
+			split[count][finish - start] = '\0';
+			count++;
+		}
+	}
+	split[count] = 0;
+	return (split);
 }
 
 #include <stdio.h>
-int main(void)
+int main()
 {
-    char **arr = ft_split("live,love,laugh", ',');
+	char **arr = ft_split("live,love,laugh", ',');
 
-    int i = 0;
-    while (arr[i])
-    {
-        printf("%s\n", arr[i]);
-        free(arr[i]);
-        i++;
-    }
-
-    free(arr);
+	int i = 0;
+	while (arr[i])
+	{
+		printf("%s\n", arr[i]);
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+	return (0);
 }

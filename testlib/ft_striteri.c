@@ -26,3 +26,20 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 	}
 	s[i] = '\0';
 }
+
+void	test(char *c)
+{
+	if (*c >= 97 && *c <= 122)
+		*c -= 32;
+}
+
+#include <stdio.h>
+int main()
+{
+	char *s = "hello..";
+	
+	printf("old : %s\n", s);
+	ft_striteri(s, test(s));
+	printf("new : %s", s);
+	return (0);
+}

@@ -13,19 +13,15 @@
 #include "libft.h"
 #include <stdlib.h>
 
-size_t	ft_length(int num, int max)
+static size_t	ft_length(int nbr)
 {
 	size_t	len;
-
-	len = 0;
-	if (num == 0)
-		return (1);
-	if (num < 0 && max == 10)
-		len += 1;
-	while (num)
+	
+	len = (nbr <= 0);
+	while (nbr)
 	{
-		num /= max;
-		len += 1;
+		nbr /= 10;
+		len++;
 	}
 	return (len);
 }
@@ -34,42 +30,42 @@ char	*ft_itoa(int n)
 {
 	char	*str;
 	size_t	len;
-	size_t	pos;
 
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	len = ft_length(n, 10);
-	pos = len - 1;
+	len = ft_length(n);
 	str = (char *)malloc(len + 1);
 	if (!str)
 		return (NULL);
+	str[len] = '\0';
 	if (n == 0)
-	{
 		str[0] = '0';
-		str[1] = '\0';
-		return (str);
-	}
 	if (n < 0)
 	{
 		str[0] = '-';
-		n *= -1;
+		n = -n;
 	}
-	while (n > 0)
+	while (n)
 	{
-		str[pos] = (n % 10) + '0';
+		str[--len] = (n % 10) + '0';
 		n /= 10;
-		pos--;
+		len--;
 	}
-	str[len] = '\0';
 	return (str);
 }
 
-// #include <stdio.h>
-// int main()
-// {
-// 	char *result = ft_itoa(12345678);
+#include <stdio.h>
+int main()
+{
+	char *r1 = ft_itoa(-2147483648);
+	char *r2 = ft_itoa(12345678);
+	char *r3 = ft_itoa(42);
 
-// 	printf("%s\n", result);
-// 	free (result);
-// 	return (0);
-// }
+	printf("%s\n", r1);
+	free (r1);
+	printf("%s\n", r2);
+	free (r2);
+	printf("%s\n", r3);
+	free (r3);
+	return (0);
+}

@@ -40,7 +40,8 @@ char	*ft_itoa(int n)
 		return (ft_strdup("-2147483648"));
 	len = ft_length(n, 10);
 	pos = len - 1;
-	if (!(str = (char *)malloc(len + 1)))
+	str = (char *)malloc(len + 1);
+	if (!str)
 		return (NULL);
 	if (n == 0)
 	{

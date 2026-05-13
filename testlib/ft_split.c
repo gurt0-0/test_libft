@@ -35,37 +35,31 @@ size_t	word_occ(char const *s, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**split;
-	size_t	start;
-	size_t	finish;
 	size_t	i;
-	size_t count;
+	size_t	len;
 
-	count = 0;
 	if (!s)
 		return (NULL);
-	// if (!c)
-	// 	return (ft_strdup(s));
-	split = malloc(sizeof(char *) * (word_occ(s, c) + 1));
+	split = malloc(sizeof(char *) * (count_word(s, c) + 1));
 	if (!split)
-		return NULL;
+		return (NULL);
 	i = 0;
-	while (s[i])
+	while (*s)
 	{
-		while (s[i] == c)
-			i++;
-		start = i;
-		while (s[i] && s[i] != c)
-			i++;
-		finish = i;
-		if (finish > start)
+		while (*s == c)
+			s++;
+		len = 0;
+		while (s[len] && s[len] != c)
+			len++;
+		if (len > 0)
 		{
-			split[count] = malloc(finish - start + 1);
-			ft_strlcpy(split[count], s + start, finish - start + 1);
-			split[count][finish - start] = '\0';
-			count++;
+			split[i] = malloc(len +1);
+			ft_strlcpy(split[i++], s, len + 1);
 		}
 	}
-	split[count] = 0;
+	while (--i >= 0)
+		free(split[i]);
+	free(split);
 	return (split);
 }
 

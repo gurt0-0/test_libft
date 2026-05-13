@@ -13,7 +13,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-size_t	word_occ(char const *s, char c)
+static	size_t	count_word(char const *s, char c)
 {
 	int	i;
 	int	count;
@@ -30,6 +30,17 @@ size_t	word_occ(char const *s, char c)
 			i++;
 	}
 	return (count);
+}
+
+static	void	**free_split(char **split, size_t i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(split[i]);
+	}
+	free(split);
+	return ;
 }
 
 char	**ft_split(char const *s, char c)
@@ -54,12 +65,14 @@ char	**ft_split(char const *s, char c)
 		if (len > 0)
 		{
 			split[i] = malloc(len +1);
+			if (!split[i])
+				return (free_split(split, i));
 			ft_strlcpy(split[i++], s, len + 1);
+			i++;
 		}
+		s += len;
 	}
-	while (--i >= 0)
-		free(split[i]);
-	free(split);
+	split[i] = 0;
 	return (split);
 }
 

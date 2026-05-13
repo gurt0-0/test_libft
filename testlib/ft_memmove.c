@@ -19,9 +19,11 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char	*d;
 	unsigned char	*s;
 
+	if (!dest && !src)
+		return (NULL);
 	i = 0;
-	d = dest;
-	s = src;
+	d = (unsigned char *)dest;
+	s = (unsigned char *)src;
 	if (d < s)
 	{
 		while (n-- > 0)
@@ -42,17 +44,17 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-// #include <stdio.h>
-// #include <bsd/string.h>
-// int main()
-// {
-// 	char s1[] = "42 is the best!";
-// 	char s2[] = "42 is the best!";
+#include <stdio.h>
+#include <bsd/string.h>
+int main()
+{
+	char s1[20] = "42 is the best!";
+	char s2[20] = "42 is the best!";
 
-// 	memmove(s1 + 3, s1, 8);
-// 	ft_memmove(s2 + 3, s2, 8);
+	memmove(s1 + 2, s1, 15);
+	ft_memmove(s2 + 2, s2, 15);
 
-// 	printf("%s\n", s1);
-// 	printf("%s\n", s2);
-// 	return (0);
-// }
+	printf("%s\n", s1);
+	printf("%s\n", s2);
+	return (0);
+}

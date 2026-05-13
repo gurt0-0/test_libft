@@ -31,7 +31,7 @@ static	size_t	count_word(char const *s, char c)
 	}
 	return (count);
 }
-static size_t len_word(char *s, char c)
+static size_t len_word(char const *s, char c)
 {
 	size_t len;
 
@@ -41,15 +41,14 @@ static size_t len_word(char *s, char c)
 	return (len);
 }
 
-static	void	**free_split(char **split, size_t i)
+static	char	**free_split(char **split, size_t i)
 {
 	while (i > 0)
 	{
-		i--;
-		free(split[i]);
+		free(split[--i]);
 	}
 	free(split);
-	return ;
+	return (NULL);
 }
 
 char	**ft_split(char const *s, char c)
@@ -69,18 +68,16 @@ char	**ft_split(char const *s, char c)
 		while (*s == c)
 			s++;
 		len = len_word(s, c);
-		if (*s)
-		{
-			split[i] = malloc(len +1);
-			if (!split[i])
-				return (free_split(split, i));
-			ft_strlcpy(split[i++], s, len + 1);
-		}
+		split[i] = malloc(len +1);
+		if (!split[i])
+			return (free_split(split, i));
+		ft_strlcpy(split[i++], s, len + 1);
 		s += len;
 	}
 	split[i] = 0;
 	return (split);
 }
+
 
 // #include <stdio.h>
 // int main()
